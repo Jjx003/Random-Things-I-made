@@ -1,8 +1,8 @@
 local player=game.Players.LocalPlayer
 local p2=2*math.pi
 local settings={
-points=4,
-reps=3,
+points=12,
+reps=5,
 thickenss=1,
 size=12,
 center=CFrame.new(0,5,0)
