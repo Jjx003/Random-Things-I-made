@@ -546,15 +546,17 @@ Move(a,center)
 Move(b,center)
 
 local l
-local region
+--local region
 
 game:GetService('RunService').RenderStepped:connect(function()
 
 	if player.Character~=nil then
 		if player.Character:FindFirstChild('Torso')~=nil then
 			l=CFrame.new(player.Character.Torso.CFrame.p)
-			region=Region.new(l,Vector3.new(1,1,1)*settings.size/1.8)
-			local parts=region:Cast({(player.Character~=nil and player.Character),a,b})
+			--region=Region.new(l,Vector3.new(1,1,1)*settings.size/1.8)
+			--local parts=region:Cast({(player.Character~=nil and player.Character),a,b})
+			local region=Region3.new(l-(Vector3.new(1,1,1)*settings.size/2),l+(Vector3.new(1,1,1)*settings.size/2))
+			local parts=workspace:FindPartsInRegion3WithIgnoreList(region,{(player.Character~=nil and player.Character),a,b})
 			for _,v in pairs(parts) do
 				if v:FindFirstChild('Tagged')==nil then
 					if v:GetMass()<=90 then
