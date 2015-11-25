@@ -154,7 +154,7 @@ while npc.Humanoid.Health>0 do
 
 	
 
-	if distance<=20 then
+	if distance<=50 then
 		
 		local radians = math.acos((dir:Dot(npc_look)))
 		local radians2 = math.acos((dir:Dot(npc_back)))
@@ -182,7 +182,7 @@ while npc.Humanoid.Health>0 do
 		last=radians*mult
 		if not CanSee(workspace.CurrentCamera.CoordinateFrame,ntorso.CFrame,ntorso,true,npc) then
 			local x,z=player.Character.Torso.Position.X,player.Character.Torso.Position.Z
-			npc:MoveTo((player.Character.Torso.Position-ntorso.CFrame.p).unit*.1 + ntorso.Position)
+			npc:MoveTo((player.Character.Torso.Position-ntorso.CFrame.p).unit*.45 + ntorso.Position)
 			ntorso.CFrame=CFrame.new(ntorso.CFrame.p,Vector3.new(x,ntorso.Position.Y,z))
 			
 			--print'MOVING'
