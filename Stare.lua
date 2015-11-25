@@ -1,4 +1,9 @@
-local npc=game.Workspace.Dummy
+local npc
+local c=workspace:FindFirstChild(game.Players.LocalPlayer.Name)
+c.Archivable=true
+npc=c:Clone()
+npc.Parent=workspace
+
 local ntorso=npc.Torso
 local see_distance=20
 local cast=game:service'Workspace'.FindPartOnRay
