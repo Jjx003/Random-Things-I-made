@@ -18,6 +18,39 @@ end
 end
 })
 
+local BouncingBoxPoints = { -- Bouding box posiitions. 
+	Vector3.new(-1,-1,-1);
+	Vector3.new( 1,-1,-1);
+	Vector3.new(-1, 1,-1);
+	Vector3.new( 1, 1,-1);
+	Vector3.new(-1,-1, 1);
+	Vector3.new( 1,-1, 1);
+	Vector3.new(-1, 1, 1);
+	Vector3.new( 1, 1, 1);
+}
+
+local function GetBoundingBox(Objects)
+local Sides = {-math.huge;math.huge;-math.huge;math.huge;-math.huge;math.huge}
+for _, BasePart in pairs(Objects) do
+local HalfSize = BasePart.Size/2
+local Rotation = BasePart.CFrame
+for _, BoundingBoxPoint in pairs(BouncingBoxPoints) do
+local Point = Rotation*CFrame.new(HalfSize*BoundingBoxPoint).p
+
+if Point.x > Sides[1] then Sides[1] = Point.x end
+if Point.x < Sides[2] then Sides[2] = Point.x end
+if Point.y > Sides[3] then Sides[3] = Point.y end
+if Point.y < Sides[4] then Sides[4] = Point.y end
+if Point.z > Sides[5] then Sides[5] = Point.z end
+if Point.z < Sides[6] then Sides[6] = Point.z end
+end;end
+-- Size, Position
+return Vector3.new(Sides[1]-Sides[2],Sides[3]-Sides[4],Sides[5]-Sides[6]), 
+Vector3.new((Sides[1]+Sides[2])/2,(Sides[3]+Sides[4])/2,(Sides[5]+Sides[6])/2)
+end
+
+local Parts={}
+
 
 -------------------------------------------------
 -------------------------------------------------
@@ -31,11 +64,13 @@ local function Draw(p1,p2)
 	pos=pos.p+(pos.lookVector*(d/2))
 	pos=CFrame.new(pos,p2)
 	local p=Instance.new('Part')
+	p.Material=Enum.Material.Neon
 	p.CanCollide=false
 	p.Anchored=true
 	p.FormFactor=Enum.FormFactor.Custom
 	p.Size=Vector3.new(settings.thickness,settings.thickness,d)
 	p.CFrame=pos
+	Parts[#Parts+1]=p
 	return p
 end
 
@@ -113,7 +148,7 @@ end
 
 local function DrawShape()
 	local m=Instance.new('Model',workspace)
-	m.Material=Enum.Material.Neon
+	
 	AntiRemove(m,workspace)
 	for i,set in pairs(rpoints) do
 		for i2,point in pairs(set) do
@@ -131,6 +166,26 @@ local function DrawShape()
 	return m
 end
 
+function HSVtoRGB(h, s, v)
+	h = (h % 1) * 6
+	local f = h % 1
+	local p = v * (1 - s)
+	local q = v * (1 - s * f)
+	local t = v * (1 - s * (1 - f))
+	if h < 1 then
+		return v, t, p
+	elseif h < 2 then
+		return q, v, p
+	elseif h < 3 then
+		return p, v, t
+	elseif h < 4 then
+		return p, q, v
+	elseif h < 5 then
+		return t, p, v
+	else
+		return v, p, q
+	end
+end
 
 
 ------------------------------
@@ -156,6 +211,17 @@ game:GetService('RunService'):BindToRenderStep('Ball',1,function()
 if not STARTED then return end
 if player.Character~=nil then
 if player.Character:FindFirstChild('Torso')~=nil then
+local New={}
+table.foreach(Parts,function(i,v)
+	if v~=nil and pcall(function()return v.Parent end) then
+		New[#New+1]=v
+		local x,y,z=i,i+math.pi,i+math.pi*2
+		local scale=#Parts
+		local value=math.noise(i / scale + 0.5 , y / scale + 0.5 , 1)
+		v.BrickColor=BrickColor.new(HSVtoRGB(0.5+value, 1, 1))
+	end
+end)
+Parts=New
 l=CFrame.new(player.Character.Torso.CFrame.p)
 
 scan=not scan
