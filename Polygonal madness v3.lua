@@ -216,10 +216,10 @@ table.foreach(Parts,function(i,v)
 	if v~=nil and pcall(function()return v.Parent end) then
 		New[#New+1]=v
 		local x,y,z=i,i+math.pi,i+math.pi*2
-		x=x+math.sin(tick()/2)*25
-		y=y+math.sin(tick()/2)*25
+		x=x+math.sin(tick()/2)*10 -.3
+		y=y+math.sin(tick()/2)*10 -.3
 		local scale=#Parts
-		local value=math.noise(x / scale + 0.5 , y / scale + 0.5 , 1+math.sin(tick())/2)
+		local value=math.noise(x / scale + 0.5 , y / scale + 0.5 , 1+math.sin(tick()/2)/3)
 		v.BrickColor=BrickColor.new(HSVtoRGB(0.5+value, 1, 1))
 	end
 end)
