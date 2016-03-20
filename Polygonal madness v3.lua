@@ -374,7 +374,7 @@ for arg in string.gmatch(a,'(.-/*)') do print(arg) end
 
 local a='size-true/fall'
 for arg in string.gmatch(a,'(.-)/*/?) do print(arg) end
-
+s
 
 --]]
 
