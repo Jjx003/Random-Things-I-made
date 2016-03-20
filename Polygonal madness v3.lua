@@ -219,7 +219,7 @@ table.foreach(Parts,function(i,v)
 		x=x+math.sin(tick()/2)*25
 		y=y+math.sin(tick()/2)*25
 		local scale=#Parts
-		local value=math.noise(i / scale + 0.5 , y / scale + 0.5 , 1)
+		local value=math.noise(x / scale + 0.5 , y / scale + 0.5 , 1+math.sin(tick())/2)
 		v.BrickColor=BrickColor.new(HSVtoRGB(0.5+value, 1, 1))
 	end
 end)
